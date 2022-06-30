@@ -1,0 +1,36 @@
+.textContainer
+{
+ margin-top: 50px;
+}
+.income
+{
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:10px ;
+    width: 450px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex; 
+
+    height: 30px;
+    padding: 1%;
+    border-right:15px solid green;
+}
+.expense
+{
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:10px ;
+    width: 450px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex; 
+    height: 30px;
+    padding: 1%;
+    border-right:15px solid red;
+}
+
+h4
+{
+    margin-left: 29px;
+}
