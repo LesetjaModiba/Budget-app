@@ -1,8 +1,12 @@
 import '../css/singup.css';
 import { useHistory, Link} from 'react-router-dom';
-
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { useState } from 'react';
 function SignUp()
 {
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('');
     let history=useHistory();
     const signUpClick=(()=>
     {
@@ -23,7 +27,11 @@ function SignUp()
             document.querySelector(".cPassError").style.display='block';
         }
         else
-     history.push("/home")
+    //  history.push("/home")
+    {createUserWithEmailAndPassword(auth, email, password).then(()=>{
+        history.push("/home")
+    }).catch((error)=>{console.log(error)})
+    }
     });
 
     const nameKey=(()=>
@@ -47,9 +55,9 @@ function SignUp()
         <h1>Sign Up</h1>
         <input onKeyPress={nameKey} className='input1' id='name' type="text" placeholder="Name and Surname"/>
         <span className='nameError' >Enter your name and surname !</span>
-        <input onKeyPress={emailKey} className='input1' id='email' type="email" placeholder="email example@gmail.com"/>
+        <input onKeyPress={emailKey} onChange={(e)=>setEmail(e.target.value)} className='input1' id='email' type="email" placeholder="email example@gmail.com"/>
         <span className='emailError'>Enter your email !</span>
-        <input onKeyPress={passKey} className='input1' id='password' type="password" placeholder="Password"/>
+        <input onKeyPress={passKey} onChange={(e)=>setPassword(e.target.value)} className='input1' id='password' type="password" placeholder="Password"/>
         <span className='passError'>Enter your password !</span>
         <input onKeyPress={cPassKey} className='input1' id='cPassword' type="password" placeholder="Confirm password"/>
         <span className='cPassError'>Confirm your password !</span>

@@ -1,43 +1,45 @@
 import "../css/display.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../config/firebase";
 
-function DisplayTransaction (props){
-    return (
-     <div className="textContainer">
-      {props.list.map((item,uid)=>{
-        
-            if(item.transactionType ==="Expense")
-            {
-              return(
+function DisplayTransaction() {
+  const [info, setInfo] = useState([]);
 
-                            <div key={uid} className="expense">
-                            <h4>{item.item}</h4>
-                            <h4>{item.amount}</h4>
-                            {/* <h4>{item.transactionType}</h4> */}
-                
-                        </div>       
-                        )    
-            }
-            else
-            {
-            return(
 
-                          <div key={uid} className="income">
-              
-                            <h4>{item.item}</h4>
-                          <h4>{item.amount}</h4>
-                          {/* <h4>{item.transactionType}</h4> */}
-              
-                      </div>       
-                      )  
-            }  
-        
-            
+  useEffect(() => {
+    onSnapshot(collection(db, "transaction"), (snapshot) => {
+      setInfo(
+        snapshot.docs.map((dat) => ({
+          item: dat.data().item,
+          amount: dat.data().amount,
+          transactionType: dat.data().transactionType,
+        }))
+      );
+    });
+  }, []);
+  console.log("from info array", info);
 
+  return (
+    <div className="textContainer">
+      {info.map((inf, uid) => {
+        if (inf.transactionType === "Expense") {
+          return (
+            <div key={uid} className="expense">
+              <h4>{inf.item}</h4>
+              <h4>R{inf.amount}</h4>
+            </div>
+          );
+        } else {
+          return (
+            <div key={uid} className="income">
+              <h4>{inf.item}</h4>
+              <h4>R{inf.amount}</h4>
+            </div>
+          );
+        }
       })}
-      
-     </div>
-     );
-    }
-export {DisplayTransaction} ;
-
+    </div>
+  );
+}
+export { DisplayTransaction };
